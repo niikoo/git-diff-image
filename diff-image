@@ -234,26 +234,26 @@ then
     screen_height=$(echo $screeninfo | sed -e "s/.*ScreenHeight=\([0-9]*\).*/\1/")
     resolution_width=$(echo $screeninfo | sed -e "s/.*PixelsPerXLogicalInch=\([0-9]*\).*/\1/")
     resolution_height=$(echo $screeninfo | sed -e "s/.*PixelsPerYLogicalInch=\([0-9]*\).*/\1/")
-	# Assume that the combined size will be the same as the maximum of
+    # Assume that the combined size will be the same as the maximum of
     # each.  Add 100 pixels on each side for the window borders.
-    montage_width=$( echo "$f1_width + $max_file_width + $f2_width + 100" )
-    montage_height=$( echo "$f1_height + $max_file_height + $f2_height + 100" )
+    montage_width=$( echo "$f1_width + $max_file_width + $f2_width + 100" | ./win/bc -l )
+    montage_height=$( echo "$f1_height + $max_file_height + $f2_height + 100" | ./win/bc -l )
     # Select the most limiting (lowest) density.
-    if (( $(echo "($resolution_width / $montage_width * $screen_width) < ($resolution_height / $montage_height * $screen_height)") )); then
-        density=$( echo "$resolution_width / $montage_width * $screen_width" )
+    if (( $(echo "($resolution_width / $montage_width * $screen_width) < ($resolution_height / $montage_height * $screen_height)" | ./win/bc -l) )); then
+        density=$( echo "$resolution_width / $montage_width * $screen_width" | ./win/bc -l )
     else
-        density=$( echo "$resolution_height / $montage_height * $screen_height" )
+        density=$( echo "$resolution_height / $montage_height * $screen_height" | ./win/bc -l )
     fi
 
     # If the density needed is less than either of the inputs, use it.
-    if (( $(echo "$density < $resolution_width || $density < $resolution_height") )); then
+    if (( $(echo "$density < $resolution_width || $density < $resolution_height" | ./win/bc -l) )); then
         density_flag="-density $density"
     fi
 
     do_compare
-	winDestfile=$(echo $destfile | sed 's/\/tmp\//%temp%\\\\/')
-	echo "$winDestfile"
-    mspaint.exe "$winDestfile"
+	mv "$destfile" $temp
+	destfilename="$(basename -- $destfile)"
+    mspaint.exe "$temp/$destfilename"
 elif which xdg-open > /dev/null
 then
     # Get width and height of each input image.
