@@ -6,6 +6,18 @@ name="$1"
 f1="${2-/dev/null}"
 f2="${5-/dev/null}"
 
+isWindows=false
+
+if [[ "$(uname)" == *"MINGW"* ]]
+then
+	isWindows=true
+	alias compare='magick.exe compare'
+	alias montage='magick.exe montage'
+	f2="${3-/dev/null}"
+fi
+
+
+
 name1="a/$name"
 name2="b/$name"
 
@@ -57,11 +69,12 @@ thisdir="$(dirname $(readlink_f "$0"))"
 
 e_flag=''
 if [ -z "${GIT_DIFF_IMAGE_ENABLED-}" ] || \
+   ([[ "${isWindows}" == "false" ]] && ( \
    ! which compare > /dev/null || \
-   ! which montage > /dev/null
+   ! which montage > /dev/null ))
 then
+echo "eflag"
   e_flag='-e'
 fi
-
 
 exec "$thisdir/diff-image" $e_flag -n "$name1" -N "$name2" "$f1" "$f2"

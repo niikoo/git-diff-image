@@ -7,7 +7,9 @@ It can also be run as a direct CLI command for diffing two image files.
 Platforms
 ---------
 
-Only macOS and Linux at the moment.  Patches welcome!
+ - Windows
+ - macOS
+ - Linux
 
 Examples
 --------
@@ -63,8 +65,14 @@ but it's not going to be very exciting without them).
    ```bash
    pacman -S xdg-utils perl-image-exiftool imagemagick xorg-xdpyinfo
    ```
+   
+   Windows (using Chocolatey; Run command in PowerShell as Administrator):
+  
+   ```powershell
+   choco install -y exiftool imagemagick git which busybox
+   ```
 
-2. Run `./install.sh`, which will configure your global git config for you.
+2. Run `./install.sh` for macOS and Linux, `./install.bat` for Windows, which will configure your global git config for you.
 It will tell you what it's done, so it should look something like this:
 
 ```bash
