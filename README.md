@@ -7,7 +7,7 @@ It can also be run as a direct CLI command for diffing two image files.
 Platforms
 ---------
 
- - Windows
+ - Windows (x64)
  - macOS
  - Linux
 
