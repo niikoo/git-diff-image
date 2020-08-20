@@ -251,8 +251,10 @@ then
     fi
 
     do_compare
-    wintemp=$($(cmd "/c echo %TEMP%") | sed -e 's/\\/\//g')
-    mspaint.exe "$wintemp/$(basename -- $destfile)"
+    wintemp=$(echo $(cmd "/c echo %TEMP%") | sed -e 's/\"//')
+    destfilename=$(basename -- $destfile)
+    echo "Trying to open: $wintemp\\$destfilename"
+    cmd.exe "/C start $wintemp\\$destfilename"
 elif which xdg-open > /dev/null
 then
     # Get width and height of each input image.

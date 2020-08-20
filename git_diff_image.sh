@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # Usage: git_diff_image <file1> <file2>
 
